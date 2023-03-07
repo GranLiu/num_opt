@@ -12,4 +12,4 @@ Yongxi Liu, ***Xi'an Jiaotong University***
 
 ## Contact
 
-For any doubts, please contact via e-mail<liu_xii@qq.com>.
+For any doubts, please contact via e-mail: <liu_xii@qq.com>.
