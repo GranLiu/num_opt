@@ -7,8 +7,8 @@ Yongxi Liu, ***Xi'an Jiaotong University***
 
 ## Reference
 
--"Numerical Optimization" -- Jorge Nocedal, Stephen J. Wright
--"最优化方法及其 Matlab 程序设计" -- 马昌凤
+- "Numerical Optimization" -- Jorge Nocedal, Stephen J. Wright
+- "最优化方法及其 Matlab 程序设计" -- 马昌凤
 
 ## Contact
 
