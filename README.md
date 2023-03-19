@@ -3,7 +3,7 @@ A repo for the realization of numerical optimization (for large-scale unconstrai
 
 ## Timeline
 
-- 0315~0321 read [1,Ch3,Ch5]
+- √ 0315~0321 read [1,Ch3,Ch5]
 - 0322~0328 read [1,Ch6,Ch7]
 - 0329~0404 read [1,Ch8,Ch10]
 - 0405~0411 read [1,Ch9,Ch12]
