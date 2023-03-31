@@ -1,4 +1,4 @@
-function a = zoom(phi,g_phi,a_l,a_h,c1,c2)
+function [a,cal_f,cal_g] = zoom(phi,g_phi,a_l,a_h,c1,c2)
 % -------------------------------------------------------------------------
 % Zoom the interval in calculatation of step length a -- Wolfe condition.
 %
@@ -22,19 +22,24 @@ if nargin~=6
     error("6 params required in ZOOM!");
 end
 
-idx = 1;
-idx_max = 50;
+itx = 1;
+itx_max = 20;
 
 phi_0 = phi(0);
 g_phi_0 = g_phi(0);
-while idx<idx_max
+cal_f = 1;
+cal_g = 1;
+while itx<itx_max
     % use bisection to find a trial step
     a = 0.3*(a_l+a_h);
     phi_a = phi(a);
+    cal_f = cal_f + 1;
     if phi_a > phi_0+c1*a*g_phi_0 || phi_a >= phi(a_l)
+        cal_f = cal_f + 1;
         a_h = a;
     else
         d_phi_a = g_phi(a);
+        cal_g = cal_g + 1;
         if abs(d_phi_a) <= -c2*g_phi_0
             break;
         end
@@ -43,7 +48,7 @@ while idx<idx_max
         end
         a_l = a;
     end
-    idx = idx+1;
+    itx = itx+1;
 end
 
 end

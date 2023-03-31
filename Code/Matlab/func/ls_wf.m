@@ -39,27 +39,38 @@ g_phi = @(a) g(x0+a*p).'*p;
 phi_0 = phi(0);
 g_phi_0 = g_phi(0);
 phi_a0 = phi(a0);
-idx = 1;
-idx_max = 200;
-while idx<idx_max
+
+cal_f = 1;
+cal_g = 1;
+itx = 1;
+itx_max = 20;
+while itx<itx_max
     phi_a1 = phi(a1);
-    if phi_a1>phi_0+c1*a1*g_phi_0 || (phi_a1>=phi_a0 && idx>1)
-        a = zoom(phi,g_phi,a0,a1,c1,c2);
+    if phi_a1>phi_0+c1*a1*g_phi_0 || (phi_a1>=phi_a0 && itx>1)
+        [a,cal_f_tmp,cal_g_tmp] = zoom(phi,g_phi,a0,a1,c1,c2);
+        cal_f = cal_f + cal_f_tmp + 1;
+        cal_g = cal_g + cal_g_tmp;
         break;
     end
     phi_a0 = phi_a1;
     d_phi_a1 = g_phi(a1);
     if abs(d_phi_a1) <= -c2*g_phi_0
         a = a1;
+        cal_f = cal_f + 1;
+        cal_g = cal_g + 1;
         break;
     end
     if d_phi_a1>=0
-        a = zoom(phi,g_phi,a1,a0,c1,c2);
+        [a,cal_f_tmp,cal_g_tmp] = zoom(phi,g_phi,a1,a0,c1,c2);
+        cal_f = cal_f + cal_f_tmp + 1;
+        cal_g = cal_g + cal_g_tmp + 1;
         break;
     end
     a0 = a1;
     a1 = a0 + (a_max-a0) / 4;
-    idx = idx +1;
+	cal_f = cal_f + 1;
+	cal_g = cal_g + 1;
+    itx = itx +1;
 end
 
 end

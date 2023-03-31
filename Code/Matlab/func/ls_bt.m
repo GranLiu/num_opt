@@ -20,8 +20,8 @@ function [a,cal_f,cal_g] = ls_bt(f,g,x0,p,a,rou,c1)
 %
 % Yongxi Liu, Xi'an Jiaotong University, 2023-03.
 % -------------------------------------------------------------------------
-idx = 0;
-idx_max = 20;
+itx = 0;
+itx_max = 20;
 if nargin<4 || nargin>7
     error("There should be 4~7 inputs in this func.");
 end
@@ -42,12 +42,12 @@ tmp = g_val.'*p;
 cal_f = 1;
 cal_g = 1;
 
-while idx < idx_max
+while itx < itx_max
     cal_f = cal_f + 1;
     if feval(f,x0+a*p) <= f_val+c1*a*tmp
         break;
     end
     a = rou*a;
-    idx = idx + 1;
+    itx = itx + 1;
 end
 end
