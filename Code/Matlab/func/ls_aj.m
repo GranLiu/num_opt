@@ -1,7 +1,7 @@
-function a = ls_aj(f,g,x0,p,a,c1)
+function [a,cal_f,cal_g] = ls_aj(f,g,x0,p,a,c1)
 % -------------------------------------------------------------------------
 % Inexact line search to calculate step length a -- Armijo condition.
-% Use quadratic approxiamtion to calculate a at each iteration.
+% Use quadratic interpolation to calculate a at each iteration.
 % 
 % Input
 %   f: objective function
@@ -34,11 +34,18 @@ phi = @(a) f(x0+a*p);
 phi_0 = feval(phi,0);
 g_val = feval(g,x0);
 g_phi_0 = g_val.'*p;
+
+% calculation count of f_val & g_val
+cal_f = 1;
+cal_g = 1;
+
 a0 = a;
 if phi(a0) <= phi_0+c1*a0*g_phi_0
+    cal_f = cal_f + 1;
     return;
 end
 a1 = -g_phi_0*a0^2 / ( 2* (phi(a0)-phi_0-g_phi_0*a0) );
+cal_f = cal_f + 1;
 
 % if a1/a0<1e-2
 %     a1 = 0.1*a0;
@@ -46,11 +53,13 @@ a1 = -g_phi_0*a0^2 / ( 2* (phi(a0)-phi_0-g_phi_0*a0) );
 
 if phi(a1) <= phi_0+c1*a1*g_phi_0
     a = a1;
+    cal_f = cal_f + 1;
     return;
 end
 tmp_a1 = phi(a1)-phi_0-g_phi_0*a1;
 tmp_a0 = phi(a0)-phi_0-g_phi_0*a0;
 while phi(a) > phi_0+c1*a*g_phi_0
+    cal_f = cal_f + 1;
     zz = 1/(a0^2*a1^2*(a1-a0)) * [a0^2 -a1^2; -a0^3 a1^3] *...
         [tmp_a1; tmp_a0];
     a0 = a1;
@@ -61,6 +70,7 @@ while phi(a) > phi_0+c1*a*g_phi_0
 %     end
     tmp_a0 = tmp_a1;
     tmp_a1 = phi(a1)-phi_0-g_phi_0*a1;
+    cal_f = cal_f + 1;
     a = a1;
 end
 end

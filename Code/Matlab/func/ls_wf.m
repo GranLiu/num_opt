@@ -1,4 +1,4 @@
-function a = ls_wf(f,g,x0,p,a,c1,c2)
+function [a,cal_f,cal_g] = ls_wf(f,g,x0,p,a,c1,c2)
 % -------------------------------------------------------------------------
 % Inexact line search to calculate step length a -- Wolfe condition.
 %
@@ -40,7 +40,8 @@ phi_0 = phi(0);
 g_phi_0 = g_phi(0);
 phi_a0 = phi(a0);
 idx = 1;
-while true
+idx_max = 200;
+while idx<idx_max
     phi_a1 = phi(a1);
     if phi_a1>phi_0+c1*a1*g_phi_0 || (phi_a1>=phi_a0 && idx>1)
         a = zoom(phi,g_phi,a0,a1,c1,c2);

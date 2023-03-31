@@ -1,6 +1,6 @@
-function a = ls_bt(f,g,x0,p,a,rou,c)
+function [a,cal_f,cal_g] = ls_bt(f,g,x0,p,a,rou,c1)
 % -------------------------------------------------------------------------
-% Inexact line search to calculate step length a -- Backtracking.
+% Inexact line search -- Backtracking. [Armijo Condition]
 % Well-suited for Newton method but is less appropriate for quasi-Newton/CG
 %
 % Input
@@ -20,23 +20,34 @@ function a = ls_bt(f,g,x0,p,a,rou,c)
 %
 % Yongxi Liu, Xi'an Jiaotong University, 2023-03.
 % -------------------------------------------------------------------------
+idx = 0;
+idx_max = 20;
 if nargin<4 || nargin>7
     error("There should be 4~7 inputs in this func.");
 end
 if nargin == 4
     a = 1;
     rou = 0.618;
-    c = 1e-4;
+    c1 = 1e-4;
 elseif nargin == 5
     rou = 0.618;
-    c = 1e-4;
+    c1 = 1e-4;
 elseif nargin == 6
-    c = 1e-4;
+    c1 = 1e-4;
 end
 f_val = feval(f,x0);
 g_val = feval(g,x0);
 tmp = g_val.'*p;
-while( feval(f,x0+a*p) > f_val+c*a*tmp )
+% calculation count of f_val & g_val
+cal_f = 1;
+cal_g = 1;
+
+while idx < idx_max
+    cal_f = cal_f + 1;
+    if feval(f,x0+a*p) <= f_val+c1*a*tmp
+        break;
+    end
     a = rou*a;
+    idx = idx + 1;
 end
 end

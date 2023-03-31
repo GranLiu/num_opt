@@ -1,4 +1,4 @@
-function x1 = bfgs(f,g,x0,tor,h)
+function [x1,cal_f,cal_g] = bfgs(f,g,x0,tor,h)
 % -------------------------------------------------------------------------
 % Quasi-Newton method -- BFGS
 %
@@ -27,18 +27,29 @@ if nargin == 3
 elseif nargin == 4
     h = eye(len);
 end
+
 x1 = x0;
+cal_f = 0;
+cal_g = 0;
 while( sum(abs(feval(g,x1))) > tor )
-    p = -h*feval(g,x1);
+    % to avoid calculate gradient of fk again later (compromise spa->time)
+    g_fk = feval(g,x1);
+    p = -h*g_fk;
     x0 = x1;
-%     a = ls_wf(f,g,x0,p);
-%     a = ls_aj(f,g,x0,p);
-    a = ls_bt(f,g,x0,p);
-    x1 = x0 + a*p;
+%     [a,cal_f_tmp,cal_g_tmp] = ls_wf(f,g,x0,p);
+    [a,cal_f_tmp,cal_g_tmp] = ls_aj(f,g,x0,p);
+%     [a,cal_f_tmp,cal_g_tmp] = ls_bt(f,g,x0,p);
+    
+    % PROBLEM: if |s| is too short, y \aprx 0, leading to rou = INF
     s = a*p;
-    y = feval(g,x1) - feval(g,x0);
+    x1 = x0 + s;
+    y = feval(g,x1) - g_fk;
     rou = 1/(y.'*s);
     h = (eye(len) - rou*s*y.')*h*(eye(len)-rou*y*s.') + rou*(s*s.');
+    
+    % count of the f/g calculation
+    cal_g = cal_g + cal_g_tmp + 2;
+    cal_f = cal_f + cal_f_tmp;
 end
 
 end

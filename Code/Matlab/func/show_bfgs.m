@@ -35,7 +35,7 @@ while( df > tor )
     p = -h*feval(g,x1);
     x0 = x1;
 %     a = ls_wf(f,g,x0,p);
-%     a = ls_aj(f,g,x0,p);
+    a = ls_aj(f,g,x0,p);
     a = ls_bt(f,g,x0,p);
     x1 = x0 + a*p;
     df = sum(abs(feval(g,x1)));

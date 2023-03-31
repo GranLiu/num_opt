@@ -22,9 +22,12 @@ if nargin~=6
     error("6 params required in ZOOM!");
 end
 
+idx = 1;
+idx_max = 50;
+
 phi_0 = phi(0);
 g_phi_0 = g_phi(0);
-while true
+while idx<idx_max
     % use bisection to find a trial step
     a = 0.3*(a_l+a_h);
     phi_a = phi(a);
@@ -40,6 +43,7 @@ while true
         end
         a_l = a;
     end
+    idx = idx+1;
 end
 
 end
