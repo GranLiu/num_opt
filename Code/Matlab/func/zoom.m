@@ -1,4 +1,4 @@
-function [a,cal_f,cal_g] = zoom(phi,g_phi,a_l,a_h,c1,c2)
+function [a,cal_f,cal_g] = zoom(phi,g_phi,a_l,a_u,c1,c2)
 % -------------------------------------------------------------------------
 % Zoom the interval in calculatation of step length a -- Wolfe condition.
 %
@@ -6,7 +6,7 @@ function [a,cal_f,cal_g] = zoom(phi,g_phi,a_l,a_h,c1,c2)
 %   phi: eq.3.54 in [1]
 %   g_phi: left-hand-side of eq.3.5, gradient of phi
 %	a_l: step length lower bound
-%   a_h: step length higher bound
+%   a_u: step length upper bound
 %	c1: slope for Armijo condition
 %   c2: slope for curvature condition
 % Output
@@ -31,20 +31,20 @@ cal_f = 1;
 cal_g = 1;
 while itx<itx_max
     % use bisection to find a trial step
-    a = 0.3*(a_l+a_h);
+    a = 0.3*(a_l+a_u);
     phi_a = phi(a);
     cal_f = cal_f + 1;
     if phi_a > phi_0+c1*a*g_phi_0 || phi_a >= phi(a_l)
         cal_f = cal_f + 1;
-        a_h = a;
+        a_u = a;
     else
         d_phi_a = g_phi(a);
         cal_g = cal_g + 1;
         if abs(d_phi_a) <= -c2*g_phi_0
             break;
         end
-        if d_phi_a*(a_h-a_l) >= 0
-            a_h = a_l;
+        if d_phi_a*(a_u-a_l) >= 0
+            a_u = a_l;
         end
         a_l = a;
     end

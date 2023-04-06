@@ -22,7 +22,7 @@ if nargin<3 || nargin>6
 end
 len = length(x0);
 if nargin == 3
-    itx_max = 300;
+    itx_max = 20000;
     tor = 1e-5;
     h = eye(len);
 elseif nargin == 4
@@ -49,8 +49,8 @@ while itx < itx_max
     end
     % to avoid calculate gradient of fk again later (compromise spa->time)
     p = -h*g_fk;
-%     [a,cal_f_tmp,cal_g_tmp] = ls_wf(f,g,x1,p);
-    [a,cal_f_tmp,cal_g_tmp] = ls_aj(f,g,x1,p);
+    [a,cal_f_tmp,cal_g_tmp] = ls_wf(f,g,x1,p);
+%     [a,cal_f_tmp,cal_g_tmp] = ls_aj(f,g,x1,p);
 %     [a,cal_f_tmp,cal_g_tmp] = ls_bt(f,g,x1,p);
     
     % PROBLEM: if |s| is too short, y \aprx 0, leading to rou = INF

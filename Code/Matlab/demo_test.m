@@ -16,7 +16,7 @@ addpath("./func");
 %% Rosenbrock function
 f = @(x) 100*(x(1)^2-x(2))^2+(x(1)-1)^2;
 g = @(x) [400*x(1)*(x(1)^2-x(2))+2*(x(1)-1), -200*(x(1)^2-x(2))]';
-x0 = [-2 -2]';
+x0 = [10000 10000]';
 
 %% use show_* to extract gradient and point at each itr
 % [x,cal_f,cal_g,itx] = bfgs(f,g,x0);
@@ -52,7 +52,8 @@ y = -max(x_ls,[],'all'):0.1:max(x_ls,[],'all');
 figure()
 [X,Y] = meshgrid(x,y);
 Z = 100*(X.^2-Y).^2+(X-1).^2;
-contour(X,Y,Z,400); hold on;
+[C,h] = contour(X,Y,Z,100); hold on;
+clabel(C,h);
 plot(x_ls(1,:),x_ls(2,:),'k-o','linewidth',1.4);
 grid on; box on;
 set(gca,'Color','none');

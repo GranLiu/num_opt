@@ -32,7 +32,7 @@ elseif nargin == 5
     h = eye(len);
 end
 
-itx = 0;
+itx = 1;
 x1 = x0;
 cal_f = 0;
 cal_g = 0;
@@ -52,6 +52,9 @@ while itx < itx_max
     x1 = x1 + s;
     y = feval(g,x1) - g_fk;
     rou = 1/(y.'*s);
+%     if itx == 1 && nargin <= 5
+%         h = (y.'*s) / (y.'*y) * h;
+%     end
     h = (eye(len) - rou*s*y.')*h*(eye(len)-rou*y*s.') + rou*(s*s.');
     
     % count of the f/g calculation
